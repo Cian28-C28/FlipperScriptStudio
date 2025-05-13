@@ -1,0 +1,257 @@
+{
+  "metadata": {
+    "name": "RFID Reader",
+    "author": "FlipperScriptStudio",
+    "description": "An RFID reader application for Flipper Zero",
+    "created": "2025-05-13T17:40:00.000Z",
+    "modified": "2025-05-13T17:40:00.000Z"
+  },
+  "manifest": {
+    "name": "RFID Reader",
+    "appid": "rfid_reader",
+    "version": "1.0",
+    "entry_point": "rfid_reader_app",
+    "requires": ["gui", "storage", "dialogs", "notification", "lfrfid"],
+    "stack_size": 2048,
+    "icon": null
+  },
+  "canvas": {
+    "blocks": [
+      {
+        "id": "app_entry_point",
+        "type": "app_entry_point",
+        "position": {"x": 100, "y": 100},
+        "properties": {
+          "name": "rfid_reader_app"
+        }
+      },
+      {
+        "id": "app_init",
+        "type": "app_init",
+        "position": {"x": 100, "y": 200},
+        "properties": {
+          "app_name": "RFID Reader"
+        }
+      },
+      {
+        "id": "gui_init",
+        "type": "gui_init",
+        "position": {"x": 100, "y": 300},
+        "properties": {}
+      },
+      {
+        "id": "rfid_init",
+        "type": "rfid_init",
+        "position": {"x": 100, "y": 400},
+        "properties": {}
+      },
+      {
+        "id": "notification_init",
+        "type": "notification_init",
+        "position": {"x": 100, "y": 500},
+        "properties": {}
+      },
+      {
+        "id": "display_text",
+        "type": "display_text",
+        "position": {"x": 100, "y": 600},
+        "properties": {
+          "text": "RFID Reader",
+          "x": 64,
+          "y": 12,
+          "horizontal_alignment": "center",
+          "font": "primary"
+        }
+      },
+      {
+        "id": "display_text_2",
+        "type": "display_text",
+        "position": {"x": 100, "y": 700},
+        "properties": {
+          "text": "Waiting for RFID card...",
+          "x": 64,
+          "y": 32,
+          "horizontal_alignment": "center",
+          "font": "secondary"
+        }
+      },
+      {
+        "id": "gui_refresh",
+        "type": "gui_refresh",
+        "position": {"x": 100, "y": 800},
+        "properties": {}
+      },
+      {
+        "id": "rfid_read",
+        "type": "rfid_read",
+        "position": {"x": 300, "y": 400},
+        "properties": {
+          "timeout_ms": 0
+        }
+      },
+      {
+        "id": "rfid_data_check",
+        "type": "condition",
+        "position": {"x": 300, "y": 500},
+        "properties": {
+          "condition": "rfid_data != NULL"
+        }
+      },
+      {
+        "id": "notification_success",
+        "type": "notification_message",
+        "position": {"x": 500, "y": 600},
+        "properties": {
+          "type": "success",
+          "message": "RFID card detected"
+        }
+      },
+      {
+        "id": "display_rfid_data",
+        "type": "display_rfid_data",
+        "position": {"x": 500, "y": 700},
+        "properties": {}
+      },
+      {
+        "id": "save_dialog",
+        "type": "dialog_confirm",
+        "position": {"x": 500, "y": 800},
+        "properties": {
+          "text": "Save RFID data?",
+          "yes_text": "Yes",
+          "no_text": "No"
+        }
+      },
+      {
+        "id": "save_condition",
+        "type": "condition",
+        "position": {"x": 500, "y": 900},
+        "properties": {
+          "condition": "dialog_result == true"
+        }
+      },
+      {
+        "id": "save_rfid_data",
+        "type": "save_rfid_data",
+        "position": {"x": 700, "y": 1000},
+        "properties": {
+          "storage_path": "/ext/lfrfid"
+        }
+      },
+      {
+        "id": "notification_saved",
+        "type": "notification_message",
+        "position": {"x": 700, "y": 1100},
+        "properties": {
+          "type": "success",
+          "message": "RFID data saved"
+        }
+      },
+      {
+        "id": "wait_for_exit",
+        "type": "wait_for_input",
+        "position": {"x": 300, "y": 1200},
+        "properties": {
+          "key": "back",
+          "timeout_ms": 0
+        }
+      },
+      {
+        "id": "cleanup",
+        "type": "cleanup",
+        "position": {"x": 300, "y": 1300},
+        "properties": {}
+      },
+      {
+        "id": "app_exit",
+        "type": "app_exit",
+        "position": {"x": 300, "y": 1400},
+        "properties": {
+          "exit_code": 0
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from": {"block": "app_entry_point", "connector": "out"},
+        "to": {"block": "app_init", "connector": "in"}
+      },
+      {
+        "from": {"block": "app_init", "connector": "out"},
+        "to": {"block": "gui_init", "connector": "in"}
+      },
+      {
+        "from": {"block": "gui_init", "connector": "out"},
+        "to": {"block": "rfid_init", "connector": "in"}
+      },
+      {
+        "from": {"block": "rfid_init", "connector": "out"},
+        "to": {"block": "notification_init", "connector": "in"}
+      },
+      {
+        "from": {"block": "notification_init", "connector": "out"},
+        "to": {"block": "display_text", "connector": "in"}
+      },
+      {
+        "from": {"block": "display_text", "connector": "out"},
+        "to": {"block": "display_text_2", "connector": "in"}
+      },
+      {
+        "from": {"block": "display_text_2", "connector": "out"},
+        "to": {"block": "gui_refresh", "connector": "in"}
+      },
+      {
+        "from": {"block": "gui_refresh", "connector": "out"},
+        "to": {"block": "rfid_read", "connector": "in"}
+      },
+      {
+        "from": {"block": "rfid_read", "connector": "out"},
+        "to": {"block": "rfid_data_check", "connector": "in"}
+      },
+      {
+        "from": {"block": "rfid_data_check", "connector": "out_true"},
+        "to": {"block": "notification_success", "connector": "in"}
+      },
+      {
+        "from": {"block": "notification_success", "connector": "out"},
+        "to": {"block": "display_rfid_data", "connector": "in"}
+      },
+      {
+        "from": {"block": "display_rfid_data", "connector": "out"},
+        "to": {"block": "save_dialog", "connector": "in"}
+      },
+      {
+        "from": {"block": "save_dialog", "connector": "out"},
+        "to": {"block": "save_condition", "connector": "in"}
+      },
+      {
+        "from": {"block": "save_condition", "connector": "out_true"},
+        "to": {"block": "save_rfid_data", "connector": "in"}
+      },
+      {
+        "from": {"block": "save_rfid_data", "connector": "out"},
+        "to": {"block": "notification_saved", "connector": "in"}
+      },
+      {
+        "from": {"block": "notification_saved", "connector": "out"},
+        "to": {"block": "wait_for_exit", "connector": "in"}
+      },
+      {
+        "from": {"block": "save_condition", "connector": "out_false"},
+        "to": {"block": "wait_for_exit", "connector": "in"}
+      },
+      {
+        "from": {"block": "rfid_data_check", "connector": "out_false"},
+        "to": {"block": "wait_for_exit", "connector": "in"}
+      },
+      {
+        "from": {"block": "wait_for_exit", "connector": "out"},
+        "to": {"block": "cleanup", "connector": "in"}
+      },
+      {
+        "from": {"block": "cleanup", "connector": "out"},
+        "to": {"block": "app_exit", "connector": "in"}
+      }
+    ]
+  }
+}

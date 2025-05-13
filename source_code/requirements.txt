@@ -1,0 +1,18 @@
+# Core dependencies
+PyQt6>=6.4.0
+PyQt6-Qt6>=6.4.0
+PyQt6-sip>=13.4.0
+
+# For uFBT integration
+pyserial>=3.5
+oslex>=0.3.0
+
+# For Windows-specific functionality
+pywin32>=305; platform_system == "Windows"
+
+# For code validation
+pylint>=2.15.0
+
+# For development and testing
+pytest>=7.0.0
+black>=22.0.0

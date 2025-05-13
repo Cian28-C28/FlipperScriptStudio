@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "name": "Hello World",
+    "author": "FlipperScriptStudio",
+    "description": "A simple Hello World application for Flipper Zero",
+    "created": "2025-05-13T17:30:00.000Z",
+    "modified": "2025-05-13T17:30:00.000Z"
+  },
+  "manifest": {
+    "name": "Hello World",
+    "appid": "hello_world",
+    "version": "1.0",
+    "entry_point": "app_main",
+    "requires": ["gui"],
+    "stack_size": 1024,
+    "icon": null
+  },
+  "canvas": {
+    "blocks": [
+      {
+        "id": "app_entry_point",
+        "type": "app_entry_point",
+        "position": {"x": 100, "y": 100},
+        "properties": {
+          "name": "app_main"
+        }
+      },
+      {
+        "id": "gui_init",
+        "type": "gui_init",
+        "position": {"x": 100, "y": 200},
+        "properties": {}
+      },
+      {
+        "id": "display_text",
+        "type": "display_text",
+        "position": {"x": 100, "y": 300},
+        "properties": {
+          "text": "Hello, World!",
+          "x": 32,
+          "y": 32,
+          "horizontal_alignment": "center",
+          "font": "primary"
+        }
+      },
+      {
+        "id": "gui_refresh",
+        "type": "gui_refresh",
+        "position": {"x": 100, "y": 400},
+        "properties": {}
+      },
+      {
+        "id": "wait_for_input",
+        "type": "wait_for_input",
+        "position": {"x": 100, "y": 500},
+        "properties": {
+          "timeout_ms": 5000
+        }
+      },
+      {
+        "id": "app_exit",
+        "type": "app_exit",
+        "position": {"x": 100, "y": 600},
+        "properties": {
+          "exit_code": 0
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from": {"block": "app_entry_point", "connector": "out"},
+        "to": {"block": "gui_init", "connector": "in"}
+      },
+      {
+        "from": {"block": "gui_init", "connector": "out"},
+        "to": {"block": "display_text", "connector": "in"}
+      },
+      {
+        "from": {"block": "display_text", "connector": "out"},
+        "to": {"block": "gui_refresh", "connector": "in"}
+      },
+      {
+        "from": {"block": "gui_refresh", "connector": "out"},
+        "to": {"block": "wait_for_input", "connector": "in"}
+      },
+      {
+        "from": {"block": "wait_for_input", "connector": "out"},
+        "to": {"block": "app_exit", "connector": "in"}
+      }
+    ]
+  }
+}
